@@ -14,6 +14,8 @@ HEADERS = {
 }
 
 # 创建当日表情包文件夹
+
+
 def makedir():
     today = time.strftime("%Y%m%d")
     if not os.path.exists(today):
@@ -23,11 +25,14 @@ def makedir():
         os.chdir(today)
 
 # 保存表情
+
+
 def save_pic(realbq_url, bq_name):
     img = requests.get(realbq_url, headers=HEADERS, timeout=10)
     with open(bq_name, 'ab') as f:
         f.write(img.content)
         print(bq_name)
+
 
 # 主爬虫，获取图片url，正则匹配图片格式后缀作为文件名后缀
 def crawler(url):
@@ -36,9 +41,9 @@ def crawler(url):
         'div', {'class': 'ui segment imghover'}).find_all('a')
     for img_info in img_infos:
         url_info = img_info.find('img', {'class': 'ui image lazy'})
-        bq_name = url_info['title']
         realbq_url = url_info['data-original']
         realbq_url = re.sub('bmiddle', 'large', realbq_url)
+        bq_name = url_info['title']
         suffix = re.search(
             'jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga', realbq_url).group()
         bq_name += '.'+suffix
