@@ -13,7 +13,7 @@ HEADERS = {
     'Referer': "http://www.fabiaoqing.com"
 }
 
-
+# 创建当日表情包文件夹
 def makedir():
     today = time.strftime("%Y%m%d")
     if not os.path.exists(today):
@@ -22,14 +22,14 @@ def makedir():
     else:
         os.chdir(today)
 
-
+# 保存表情
 def save_pic(realbq_url, bq_name):
     img = requests.get(realbq_url, headers=HEADERS, timeout=10)
     with open(bq_name, 'ab') as f:
         f.write(img.content)
         print(bq_name)
 
-
+# 主爬虫，获取图片url，正则匹配图片格式后缀作为文件名后缀
 def crawler(url):
     r = requests.get(url, headers=HEADERS).text
     img_infos = BeautifulSoup(r, 'lxml').find(
